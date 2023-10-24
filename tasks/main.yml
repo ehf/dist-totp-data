@@ -1,0 +1,28 @@
+---
+# tasks file for dist-totp-data
+
+- name: "debug totpfiles_content"
+  debug:
+    msg: "{{ hostvars.testdev2.totp_content }}"
+
+- name: "debug ldap_uid_and_host_content"
+  debug:
+    msg: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+
+- name: "debug ldap_uid_and_host_content host variable type"
+  debug:
+    msg: "item.host is {{ item.host | type_debug }}"
+  loop: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+
+- name: "debug ldap_uid_and_host_content uid variable type"
+  debug:
+    msg: "item.uid is {{ item.uid | type_debug }}"
+  loop: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+
+- name: "confirm ldap_uid_and_host_content host variable type is list after split"
+  debug:
+    msg: "item.host is {{ item.host | trim | split | type_debug }}"
+  loop: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+
+#- import_tasks: init.yml
+- import_tasks: distribute-totp-files.yml

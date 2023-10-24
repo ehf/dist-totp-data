@@ -1,0 +1,28 @@
+---
+ 
+- name: "distribute totp content per user and netgroup"
+  copy:
+    content: "{{ item.content | b64decode | trim }}"
+    dest: /home/{{ item.item.pw_name }}/.ssh/totp
+    owner: "{{ item.item.pw_name }}"
+    mode: '0600'
+  with_items:
+    - "{{ hostvars.testdev2.totp_content }}"
+  when:
+    - host_netgroup_list is subset group_names
+    - item.item.pw_name in uid_list
+  vars:
+    uid_list: "{{ outside_dist_item.uid | trim | split }}"
+    host_netgroup_list: "{% if outside_dist_item.host is string %}{{ outside_dist_item.host | trim | split }}{% else %}{{ outside_dist_item.host }}{% endif %}"
+  tags:
+    - distribute-totp-files
+
+#- debug: var=group_names
+#- debug: var=groups
+
+
+
+
+
+
+#host_netgroup_list: "{{ outside_dist_item.host if (outside_dist_item.host is iterable) else (outside_dist_item.host | trim | split) }}"
