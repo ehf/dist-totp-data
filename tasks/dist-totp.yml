@@ -11,9 +11,12 @@
   when:
     - host_netgroup_list is subset group_names
     - item.item.pw_name in uid_list
+    #- (host_netgroup_list is subset group_names) or (host_netgroup_list is contains('ADMIN'))
   vars:
     uid_list: "{{ outside_dist_item.uid | trim | split }}"
-    host_netgroup_list: "{% if outside_dist_item.host is string %}{{ outside_dist_item.host | trim | split }}{% else %}{{ outside_dist_item.host }}{% endif %}"
+    host_ldapattr_list: "{% if outside_dist_item.host is string %}{{ outside_dist_item.host | trim | split }}{% else %}{{ outside_dist_item.host }}{% endif %}"
+    host_netgroup_list: "{{ host_ldapattr_list | intersect(group_names) }}"
+    #host_netgroup_list: "{% if outside_dist_item.host is string %}{{ outside_dist_item.host | trim | split }}{% else %}{{ outside_dist_item.host }}{% endif %}"
   tags:
     - distribute-totp-files
 
