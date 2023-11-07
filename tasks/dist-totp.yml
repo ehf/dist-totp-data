@@ -7,7 +7,7 @@
     owner: "{{ item.item.pw_name }}"
     mode: '0600'
   with_items:
-    - "{{ hostvars.testdev2.totp_content }}"
+    - "{{ hostvars.enrollment.totp_content }}"
   when:
     - (host_netgroup_list is subset group_names) or (host_netgroup_list is contains('ADMIN'))
     - item.item.pw_name in uid_list
