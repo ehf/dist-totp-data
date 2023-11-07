@@ -3,26 +3,26 @@
 
 - name: "debug totpfiles_content"
   ansible.builtin.debug:
-    msg: "{{ hostvars.testdev2.totp_content }}"
+    msg: "{{ hostvars.enrollment.totp_content }}"
 
 - name: "debug ldap_uid_and_host_content"
   ansible.builtin.debug:
-    msg: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+    msg: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
 
 - name: "debug ldap_uid_and_host_content host variable type"
   ansible.builtin.debug:
     msg: "item.host is {{ item.host | type_debug }}"
-  loop: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
 
 - name: "debug ldap_uid_and_host_content uid variable type"
   ansible.builtin.debug:
     msg: "item.uid is {{ item.uid | type_debug }}"
-  loop: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
 
 - name: "confirm ldap_uid_and_host_content host variable type is list after split"
   ansible.builtin.debug:
     msg: "item.host is {{ item.host | trim | split | type_debug }}"
-  loop: "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
 
 #- import_tasks: init.yml
 - import_tasks: distribute-totp-files.yml

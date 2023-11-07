@@ -2,7 +2,7 @@
 
 - include_tasks: dist-totp.yml
   with_items:
-    - "{{ hostvars.testdev2.ldap_uid_and_host_content }}"
+    - "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
   loop_control:
     loop_var: outside_dist_item
   tags:
