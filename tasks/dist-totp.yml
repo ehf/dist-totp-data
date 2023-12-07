@@ -1,6 +1,9 @@
 ---
+
+- ansible.builtin.debug: var=group_names
+- ansible.builtin.debug: var=groups
  
-- name: "distribute totp content per user and netgroup"
+- name: "distribute totp content per user and netgroup - {{ uid_list }} | {{ host_ldapattr_list }} | {{ host_netgroup_list }}"
   ansible.builtin.copy:
     content: "{{ item.content | b64decode | trim }}"
     dest: /home/{{ item.item.pw_name }}/.ssh/totp
@@ -18,8 +21,6 @@
   tags:
     - distribute-totp-files
 
-#- ansible.builtin.debug: var=group_names
-#- ansible.builtin.debug: var=groups
 
 
 
