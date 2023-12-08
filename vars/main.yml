@@ -1,2 +1,6 @@
 ---
 # vars file for dist-totp-data
+
+uid_list: "{{ outside_dist_item.uid | trim | split }}"
+host_ldapattr_list: "{% if outside_dist_item.host is string %}{{ outside_dist_item.host | trim | split }}{% else %}{{ outside_dist_item.host }}{% endif %}"
+host_netgroup_list: "{{ host_ldapattr_list | intersect(group_names) }}"

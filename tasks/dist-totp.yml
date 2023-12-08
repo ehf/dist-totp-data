@@ -2,6 +2,23 @@
 
 - ansible.builtin.debug: var=group_names
 - ansible.builtin.debug: var=groups
+
+
+- name: "mkdir per user and netgroup - {{ uid_list }} | {{ host_ldapattr_list }} | {{ host_netgroup_list }}"
+  ansible.builtin.file:
+    path: /home/{{ item.item.pw_name }}/.ssh/
+    owner: "{{ item.item.pw_name }}"
+    state: directory
+    mode: '0700'
+  with_items:
+    - "{{ hostvars.enrollment.totp_content }}"
+  when:
+    - host_netgroup_list | length > 0
+    - (host_netgroup_list is subset group_names) or (host_netgroup_list is contains('ADMIN'))
+    - item.item.pw_name in uid_list
+  tags:
+    - distribute-totp-files
+
  
 - name: "distribute totp content per user and netgroup - {{ uid_list }} | {{ host_ldapattr_list }} | {{ host_netgroup_list }}"
   ansible.builtin.copy:
@@ -15,10 +32,10 @@
     - host_netgroup_list | length > 0
     - (host_netgroup_list is subset group_names) or (host_netgroup_list is contains('ADMIN'))
     - item.item.pw_name in uid_list
-  vars:
-    uid_list: "{{ outside_dist_item.uid | trim | split }}"
-    host_ldapattr_list: "{% if outside_dist_item.host is string %}{{ outside_dist_item.host | trim | split }}{% else %}{{ outside_dist_item.host }}{% endif %}"
-    host_netgroup_list: "{{ host_ldapattr_list | intersect(group_names) }}"
+#  vars:
+#    uid_list: "{{ outside_dist_item.uid | trim | split }}"
+#    host_ldapattr_list: "{% if outside_dist_item.host is string %}{{ outside_dist_item.host | trim | split }}{% else %}{{ outside_dist_item.host }}{% endif %}"
+#    host_netgroup_list: "{{ host_ldapattr_list | intersect(group_names) }}"
   tags:
     - distribute-totp-files
 
