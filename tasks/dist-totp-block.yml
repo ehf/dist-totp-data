@@ -1,0 +1,37 @@
+---
+
+- ansible.builtin.debug: var=group_names
+- ansible.builtin.debug: var=groups
+
+- name: "distribute totp where allowed"
+  block:
+    - name: "mkdir per user and netgroup - {{ uid_list }} | {{ host_ldapattr_list }} | {{ host_netgroup_list }}"
+      ansible.builtin.file:
+        path: /home/{{ item.item.pw_name }}/.ssh/
+        owner: "{{ item.item.pw_name }}"
+        state: directory
+        mode: '0700'
+      with_items:
+        - "{{ hostvars.enrollment.totp_content }}"
+ 
+    - name: "distribute totp content per user and netgroup - {{ uid_list }} | {{ host_ldapattr_list }} | {{ host_netgroup_list }}"
+      ansible.builtin.copy:
+        content: "{{ item.content | b64decode | trim }}"
+        dest: /home/{{ item.item.pw_name }}/.ssh/totp
+        owner: "{{ item.item.pw_name }}"
+        mode: '0600'
+      with_items:
+        - "{{ hostvars.enrollment.totp_content }}"
+  no_log: True
+  when: >
+    ( (host_ldapattr_list is contains('ADMIN')) and (item.item.pw_name in uid_list) ) or
+    ( (host_netgroup_list | length > 0) and (host_netgroup_list is subset group_names) and (item.item.pw_name in uid_list) )
+  tags:
+    - distribute-totp-files
+
+
+
+
+
+
+#host_netgroup_list: "{{ outside_dist_item.host if (outside_dist_item.host is iterable) else (outside_dist_item.host | trim | split) }}"
