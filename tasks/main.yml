@@ -1,36 +1,39 @@
 ---
 # tasks file for dist-totp-data
 
-- name: "debug totpfiles_content"
-  ansible.builtin.debug:
-    msg: "{{ hostvars.enrollment.totp_content }}"
-
-- name: "debug ldap_uid_and_host_content"
-  ansible.builtin.debug:
-    msg: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
-
-- name: "debug ldap_uid_and_host_content host variable type"
-  ansible.builtin.debug:
-    msg: "item.host is {{ item.host | type_debug }}"
-  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
-
-- name: "debug ldap_uid_and_host_content uid variable type"
-  ansible.builtin.debug:
-    msg: "item.uid is {{ item.uid | type_debug }}"
-  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
-
-- name: "confirm ldap_uid_and_host_content host variable type is list after split"
-  ansible.builtin.debug:
-    msg: "item.host is {{ item.host | trim | split | type_debug }}"
-  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
-
-- name: "debug group_names - List of groups to which the current host belongs"
-  ansible.builtin.debug:
-    var: group_names
-
-- name: "debug groups - List all groups and each group contains a list of associated hosts"
-  ansible.builtin.debug:
-    var: groups
+# comment out debug statement
+# remove comments to enable output
+#
+#- name: "debug totpfiles_content"
+#  ansible.builtin.debug:
+#    msg: "{{ hostvars.enrollment.totp_content }}"
+#
+#- name: "debug ldap_uid_and_host_content"
+#  ansible.builtin.debug:
+#    msg: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
+#
+#- name: "debug ldap_uid_and_host_content host variable type"
+#  ansible.builtin.debug:
+#    msg: "item.host is {{ item.host | type_debug }}"
+#  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
+#
+#- name: "debug ldap_uid_and_host_content uid variable type"
+#  ansible.builtin.debug:
+#    msg: "item.uid is {{ item.uid | type_debug }}"
+#  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
+#
+#- name: "confirm ldap_uid_and_host_content host variable type is list after split"
+#  ansible.builtin.debug:
+#    msg: "item.host is {{ item.host | trim | split | type_debug }}"
+#  loop: "{{ hostvars.enrollment.ldap_uid_and_host_content }}"
+#
+#- name: "debug group_names - List of groups to which the current host belongs"
+#  ansible.builtin.debug:
+#    var: group_names
+#
+#- name: "debug groups - List all groups and each group contains a list of associated hosts"
+#  ansible.builtin.debug:
+#    var: groups
 
 #- import_tasks: init.yml
 - import_tasks: distribute-totp-files.yml

@@ -1,7 +1,10 @@
 ---
 
-- ansible.builtin.debug: var=group_names
-- ansible.builtin.debug: var=groups
+# comment out debug statement
+# remove comments to enable output
+#
+#- ansible.builtin.debug: var=group_names
+#- ansible.builtin.debug: var=groups
 
 
 - name: "mkdir per user and netgroup - {{ uid_list }} | {{ host_ldapattr_list }} | {{ host_netgroup_list }}"
